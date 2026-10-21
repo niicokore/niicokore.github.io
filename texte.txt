@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Le Juste Prix de Gregbeu</title>
+
+<!-- CODE GOOGLE ADSENSE - Remplace par ton code quand tu l'auras -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-TON-CODE-ICI" crossorigin="anonymous"></script>
+
+<style>
+*{box-sizing:border-box;font-family:Arial,sans-serif}
+body{background:#f0f4f8;margin:0;padding:10px;display:flex;justify-content:center}
+.card{max-width:500px;width:100%}
+.header{background:#142845;color:white;padding:18px;border-radius:18px 18px 0 0;display:flex;align-items:center;gap:15px}
+.logo-box{background:#d60000;color:white;width:85px;height:75px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:24px;border-radius:10px;line-height:0.9;text-align:center}
+.header h1{margin:0;font-size:22px}
+.header p{margin:2px 0 0;opacity:0.9}
+.content{background:white;padding:20px;border-radius:0 0 18px 18px;box-shadow:0 8px 25px rgba(0,0,0,0.15);text-align:center}
+.badge{background:#d60000;color:white;display:inline-block;padding:8px 18px;border-radius:20px;font-weight:bold;margin-bottom:12px}
+input{width:100%;padding:14px;font-size:18px;border:2px solid #ccc;border-radius:10px;margin:10px 0}
+button.main{background:#d60000;color:white;border:none;padding:14px 30px;font-size:20px;border-radius:10px;font-weight:bold;cursor:pointer;width:85%}
+button.main:hover{background:#a50000}
+.msg{margin-top:15px;padding:12px;border-radius:10px;font-weight:bold;display:none}
+.msg.show{display:block}
+.high{background:#ffe0b2;color:#7a2e00}
+.low{background:#bbdefb;color:#0d2a5a}
+.win{background:#c8e6c9;color:#124a18}
+.info{display:flex;gap:10px;justify-content:center;margin-top:15px}
+.info div{background:#eef2f7;padding:8px 14px;border-radius:8px;flex:1}
+.ad-box{background:#f9f9f9;border:1px dashed #ccc;padding:10px;margin:12px 0;border-radius:8px;font-size:12px;color:#888}
+.footer{text-align:center;margin-top:12px;color:#666;font-size:13px}
+</style>
+</head>
+<body>
+<div class="card">
+<div class="header">
+<div class="logo-box">JUST</div>
+<div><h1>Le Juste Prix de Gregbeu</h1><p>Jeu devinette du prix</p></div>
+</div>
+
+<div class="content">
+<!-- PUB 1 - EN HAUT -->
+<div class="ad-box">PUB - Espace publicitaire haut
+<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-TON-CODE-ICI" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+<div class="badge">Devine le prix entre 1000 et 10000 !</div>
+<p>J'ai choisi un prix secret entre 1000 F et 10000 F. A toi de le deviner !</p>
+
+<h3>Ton estimation en Francs :</h3>
+<input type="number" id="guess" placeholder="Ex: 5000" min="1000" max="10000">
+<button class="main" onclick="check()">Valider</button>
+
+<div id="message" class="msg"></div>
+
+<div class="info">
+<div>Tentatives : <b id="tries">0</b></div>
+<div>Meilleur score : <b id="best">-</b></div>
+</div>
+
+<p style="margin-top:12px;color:#666">Astuce : Tu as 10 essais pour trouver le juste prix.</p>
+<button onclick="resetGame()" style="margin-top:8px;background:#eee;border:none;padding:8px 15px;border-radius:6px;cursor:pointer">Recommencer</button>
+
+<!-- PUB 2 - EN BAS -->
+<div class="ad-box">PUB - Espace publicitaire bas
+<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-TON-CODE-ICI" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</div>
+
+</div>
+<div class="footer">© 2024 Le Juste Prix de Gregbeu - Bonne chance !</div>
+</div>
+
+<script>
+let secret=Math.floor(Math.random()*9001)+1000;
+let tries=0;
+let best=localStorage.getItem('bestGregbeu');
+if(best) document.getElementById('best').textContent=best;
+
+function check(){
+ let g=parseInt(document.getElementById('guess').value);
+ let m=document.getElementById('message');
+ if(!g||g<1000||g>10000){m.textContent='Entre un prix entre 1000 et 10000.';m.className='msg low show';return;}
+ tries++;document.getElementById('tries').textContent=tries;
+ if(g===secret){
+   m.textContent='Bravo Tu as gagne Le prix etait '+secret+' F en '+tries+' essais.';
+   m.className='msg win show';
+   if(!best||tries<best){best=tries;localStorage.setItem('bestGregbeu',best);document.getElementById('best').textContent=best;}
+   // PUB quand on gagne - c'est celle qui rapporte le plus
+   setTimeout(()=>{ alert('Bravo Champion Clique sur la pub pour soutenir le jeu de Gregbeu'); },800);
+ }else if(g>secret){
+   m.textContent='Trop cher Essaie un prix plus petit que '+g+' F.';
+   m.className='msg high show';
+ }else{
+   m.textContent='Pas assez cher Essaie un prix plus grand que '+g+' F.';
+   m.className='msg low show';
+ }
+ if(tries>=10 && g!==secret){m.textContent='Perdu Le juste prix etait '+secret+' F. Recommence.';m.className='msg high show';}
+ document.getElementById('guess').value='';document.getElementById('guess').focus();
+}
+function resetGame(){secret=Math.floor(Math.random()*9001)+1000;tries=0;document.getElementById('tries').textContent=0;document.getElementById('message').className='msg';document.getElementById('guess').value='';}
+</script>
+</body>
+</html>
